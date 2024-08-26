@@ -1,0 +1,7 @@
+streamlit
+speechrecognition
+pymupdf
+python-docx
+ibm-watson
+requests
+fpdf
