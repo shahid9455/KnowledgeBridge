@@ -7,4 +7,3 @@ requests
 fpdf
 reportlab
 sounddevice
-pyaudio
