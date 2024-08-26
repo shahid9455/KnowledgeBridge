@@ -11,3 +11,4 @@ streamlit-audiorecorder
 audio-recorder-streamlit
 PyAudio
 pyaudio
+setuptools
