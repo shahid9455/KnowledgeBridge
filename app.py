@@ -7,9 +7,7 @@ from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_watson.natural_language_understanding_v1 import Features, KeywordsOptions
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 import requests
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
-import io
+from fpdf import FPDF
 
 # IBM Watson NLU Configuration
 api_key_watson = 'IHbYzsY18Sl7i3Wr-_9YrYjpARDKZRnkO2ETjR5mfvnP'
@@ -51,158 +49,196 @@ if "transcribed_text" not in st.session_state:
 if "uploaded_text" not in st.session_state:
     st.session_state.uploaded_text = ""
 
-# Streamlit app
-st.title("Knowledge and Experience Storage System")
+if "search_results" not in st.session_state:
+    st.session_state.search_results = []
 
-# Voice Recording Section
-st.header("Voice Recording")
-start_button = st.button("Start Recording", key="start_recording")
+if "query_input" not in st.session_state:
+    st.session_state.query_input = ""
 
-if start_button:
-    recognizer = sr.Recognizer()
-    mic = sr.Microphone()
-    
-    with mic as source:
-        st.write("Listening...")
-        audio = recognizer.listen(source)
+# Function to generate PDF
+def generate_pdf(texts):
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+    for text in texts:
+        pdf.multi_cell(0, 10, text)
+        pdf.ln(5)
+    return pdf
 
-        try:
-            # Recognize speech using Google Web Speech API
-            text = recognizer.recognize_google(audio)
-            st.session_state.transcribed_text = text
-        except sr.UnknownValueError:
-            st.session_state.transcribed_text = "Google Speech Recognition could not understand audio"
-        except sr.RequestError:
-            st.session_state.transcribed_text = "Could not request results from Google Speech Recognition service"
+# Apply custom CSS for black boxes
+st.markdown("""
+    <style>
+        .stTextInput, .stButton, .stTextArea, .stDownloadButton, .stFileUploader {
+            background-color: black !important;
+            color: white !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
-# Text Input Section
-st.header("Text Input")
-text_input = st.text_area("Enter text to save:", value=st.session_state.transcribed_text)
+# Streamlit app with separate pages
+st.sidebar.title("Navigation")
+page = st.sidebar.radio("Go to", ["Input", "Search"])
 
-if st.button("Save Text", key="save_text"):
-    if text_input:
-        try:
-            response = nlu.analyze(
-                text=text_input,
-                features=Features(
-                    keywords=KeywordsOptions(limit=15)  # Increase the limit for more keywords
-                )
-            ).get_result()
+if page == "Input":
+    st.title("KnowledgeBridge")
 
-            keywords = [kw['text'] for kw in response['keywords']]
-            keyword_string = ', '.join(keywords)
+    # Voice Recording Section
+    st.header("Voice Recording")
+    start_button = st.button("Start Recording", key="start_recording")
 
-            with open(filename, 'a') as file:
-                file.write(f"Text: {text_input}\nKeywords: {keyword_string}\n\n")
+    if start_button:
+        recognizer = sr.Recognizer()
+        mic = sr.Microphone()
 
-            st.success("Your input and extracted keywords have been saved successfully.")
-        except Exception as e:
-            st.error(f"An error occurred while processing the text: {str(e)}")
-    else:
-        st.warning("No text entered to save.")
+        with mic as source:
+            st.write("Listening...")
+            audio = recognizer.listen(source)
 
-# Search Section
-st.header("Search")
-query_input = st.text_area("Enter keyword or full prompt to search:")
+            try:
+                # Recognize speech using Google Web Speech API
+                text = recognizer.recognize_google(audio)
+                st.session_state.transcribed_text = text
+            except sr.UnknownValueError:
+                st.session_state.transcribed_text = "Google Speech Recognition could not understand audio"
+            except sr.RequestError:
+                st.session_state.transcribed_text = "Could not request results from Google Speech Recognition service"
 
-if st.button("Search", key="search"):
-    if query_input:
-        try:
-            # Extract keywords from the query input using NLU
-            response = nlu.analyze(
-                text=query_input,
-                features=Features(
-                    keywords=KeywordsOptions(limit=15)  # Increase the limit for more keywords
-                )
-            ).get_result()
+    # Text Input Section
+    st.header("Text Input")
+    text_input = st.text_area("Enter text to save:", value=st.session_state.transcribed_text)
 
-            query_keywords = [kw['text'] for kw in response['keywords']]
-            keyword_string = ', '.join(query_keywords)
+    if st.button("Save Text", key="save_text"):
+        if text_input:
+            try:
+                response = nlu.analyze(
+                    text=text_input,
+                    features=Features(
+                        keywords=KeywordsOptions(limit=15)
+                    )
+                ).get_result()
 
-            # Read the text file and get all keywords and texts
-            with open(filename, 'r') as file:
-                lines = file.readlines()
+                keywords = [kw['text'] for kw in response['keywords']]
+                keyword_string = ', '.join(keywords)
+
+                with open(filename, 'a') as file:
+                    file.write(f"Text: {text_input}\nKeywords: {keyword_string}\n\n")
+
+                st.session_state.transcribed_text = ""  # Clear the input field after saving
+                st.success("Your input and extracted keywords have been saved successfully.")
+            except Exception as e:
+                st.error(f"An error occurred while processing the text: {str(e)}")
+        else:
+            st.warning("No text entered to save.")
+
+    # File Upload Section
+    st.header("Upload PDF or DOC File")
+    uploaded_file = st.file_uploader("Choose a file", type=["pdf", "docx"])
+
+    if uploaded_file:
+        if uploaded_file.type == "application/pdf":
+            try:
+                with fitz.open(stream=uploaded_file.read(), filetype="pdf") as pdf:
+                    text = ""
+                    for page_num in range(pdf.page_count):
+                        page = pdf[page_num]
+                        text += page.get_text()
+
+                st.session_state.uploaded_text = text
+                st.success("PDF content successfully extracted and stored.")
+                st.text_area("Extracted Text from PDF:", value=st.session_state.uploaded_text, height=300)
+            except Exception as e:
+                st.error(f"An error occurred while extracting text from the PDF: {str(e)}")
+
+        elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            try:
+                doc = Document(uploaded_file)
+                text = "\n".join([para.text for para in doc.paragraphs])
+
+                st.session_state.uploaded_text = text
+                st.success("DOCX content successfully extracted and stored.")
+                st.text_area("Extracted Text from DOCX:", value=st.session_state.uploaded_text, height=300)
+            except Exception as e:
+                st.error(f"An error occurred while extracting text from the DOCX: {str(e)}")
+
+        # Save extracted text with keywords
+        if st.button("Save Extracted Text with Keywords", key="save_extracted_text"):
+            if st.session_state.uploaded_text:
+                try:
+                    response = nlu.analyze(
+                        text=st.session_state.uploaded_text,
+                        features=Features(
+                            keywords=KeywordsOptions(limit=15)
+                        )
+                    ).get_result()
+
+                    keywords = [kw['text'] for kw in response['keywords']]
+                    keyword_string = ', '.join(keywords)
+
+                    with open(filename, 'a') as file:
+                        file.write(f"Text: {st.session_state.uploaded_text}\nKeywords: {keyword_string}\n\n")
+
+                    st.session_state.uploaded_text = ""  # Clear the text after saving
+                    st.success("Extracted text and keywords have been saved successfully.")
+                except Exception as e:
+                    st.error(f"An error occurred while processing the text: {str(e)}")
+            else:
+                st.warning("No extracted text to save.")
+
+elif page == "Search":
+    st.title("Search Stored Knowledge")
+
+    st.header("Search")
+    query_input = st.text_area("Enter one or more keywords to search:", value=st.session_state.query_input)
+
+    if st.button("Search", key="search"):
+        if query_input:
+            try:
+                query_keywords = [kw.strip() for kw in query_input.split()]
+                keyword_string = ', '.join(query_keywords)
+
                 all_keywords = []
                 all_texts = []
+                
+                try:
+                    with open(filename, 'r') as file:
+                        lines = file.readlines()
 
-                for line in lines:
-                    if 'Keywords:' in line:
-                        stored_keywords = [kw.strip() for kw in line.replace('Keywords:', '').split(',')]
-                        all_keywords.append(stored_keywords)
-                    if 'Text:' in line:
-                        all_texts.append(line.replace('Text:', '').strip())
+                        for line in lines:
+                            if 'Keywords:' in line:
+                                stored_keywords = [kw.strip().lower() for kw in line.replace('Keywords:', '').split(',')]
+                                all_keywords.append(stored_keywords)
+                            if 'Text:' in line:
+                                all_texts.append(line.replace('Text:', '').strip())
+                except FileNotFoundError:
+                    st.error("The text file was not found. Please save some text first.")
+                    all_keywords = []
+                    all_texts = []
 
-            # Find matching texts based on the extracted keywords
-            matching_texts = []
-            for text in all_texts:
-                for keywords in all_keywords:
-                    if any(keyword.lower() in text.lower() for keyword in query_keywords):
+                matching_texts = []
+                for text, keywords in zip(all_texts, all_keywords):
+                    if any(query_kw.lower() in ' '.join(keywords) for query_kw in query_keywords):
                         matching_texts.append(text)
-                        break
 
-            # Generate refined text using the AIML model if there are matching texts
-            if matching_texts:
-                response = aiml_client.chat_completions_create(
-                    model="meta-llama/Meta-Llama-3-8B-Instruct-Lite",
-                    messages=[
-                        {"role": "system", "content": "You are an AI assistant who knows everything."},
-                        {"role": "user", "content": f"Refine the following text into a professional and polished summary without asking for additional data:\n\n{' '.join(matching_texts)}"}
-                    ]
-                )
-                refined_text = response['choices'][0]['message']['content'].strip()
-                if refined_text:
-                    st.subheader("Refined Text:")
-                    st.write(refined_text)
-                    pdf_button = st.button("Download as PDF", key="download_pdf")
-                    if pdf_button:
-                        buffer = io.BytesIO()
-                        c = canvas.Canvas(buffer, pagesize=letter)
-                        width, height = letter
-
-                        c.drawString(100, height - 100, "Here is a polished and professional summary:")
-                        text_object = c.beginText(100, height - 120)
-                        text_object.setFont("Helvetica", 12)
-                        text_object.setTextOrigin(100, height - 140)
-                        text_object.textLines(refined_text)
-                        c.drawText(text_object)
-                        c.showPage()
-                        c.save()
-
-                        buffer.seek(0)
-                        st.download_button(label="Download PDF", data=buffer, file_name="refined_text_summary.pdf", mime="application/pdf")
+                if not matching_texts:
+                    response = aiml_client.chat_completions_create(
+                        model="meta-llama/Meta-Llama-3-8B-Instruct-Lite",
+                        messages=[
+                            {"role": "system", "content": "You are an AI assistant who knows everything."},
+                            {"role": "user", "content": f"Provide related data for the following keywords: {keyword_string}"}
+                        ]
+                    )
+                    related_data = response['choices'][0]['message']['content'].strip()
+                    
+                    if related_data:
+                        output_text = f"You: {query_input}\n\nKnowledgeBridge:\n\n *Your search result is not in the database but here is the related data:*\n\n{related_data}"
+                    else:
+                        output_text = f"You: {query_input}\n\nKnowledgeBridge:\n\n *No related data found.*"
                 else:
-                    st.warning("No text generated.")
-            else:
-                st.warning(f"No matching content found for '{query_input}'.")
-        except Exception as e:
-            st.error(f"An error occurred: {str(e)}")
-    else:
-        st.warning("Please enter your keyword or full prompt to search.")
+                    output_text = f"You: {query_input}\n\nKnowledgeBridge:\n\n Your search result is:\n\n" + '\n'.join(matching_texts)
 
-# File Upload Section
-st.header("Upload PDF or DOC File")
-uploaded_file = st.file_uploader("Choose a file", type=["pdf", "docx"])
-
-if uploaded_file is not None:
-    file_type = uploaded_file.type
-    if file_type == "application/pdf":
-        # Extract text from PDF
-        pdf_file = BytesIO(uploaded_file.read())
-        pdf_document = fitz.open(stream=pdf_file, filetype="pdf")
-        pdf_text = ""
-        for page in pdf_document:
-            pdf_text += page.get_text()
-        pdf_document.close()
-        st.session_state.uploaded_text = pdf_text
-
-    elif file_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-        # Extract text from DOCX
-        docx_file = BytesIO(uploaded_file.read())
-        doc = Document(docx_file)
-        doc_text = ""
-        for paragraph in doc.paragraphs:
-            doc_text += paragraph.text + "\n"
-        st.session_state.uploaded_text = doc_text
-
-    # Update the text input field with the extracted text
-    st.session_state.transcribed_text = st.session_state.uploaded_text
+                st.session_state.search_results = output_text
+                st.text_area("Search Results", value=st.session_state.search_results, height=300)
+            except Exception as e:
+                st.error(f"An error occurred during the search: {str(e)}")
+        else:
+            st.warning("Please enter some keywords to search.")
