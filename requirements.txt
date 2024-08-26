@@ -9,4 +9,3 @@ reportlab
 sounddevice
 streamlit-audiorecorder
 audio-recorder-streamlit
-pyaudio
