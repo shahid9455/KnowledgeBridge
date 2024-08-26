@@ -6,8 +6,5 @@ ibm-watson
 requests
 fpdf
 reportlab
-sounddevice
-streamlit-audiorecorder
-audio-recorder-streamlit
-pyaudio
 setuptools
+pyaudio==0.2.11
