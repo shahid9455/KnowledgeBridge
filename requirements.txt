@@ -1,5 +1,5 @@
 streamlit
-speech_recognition
+speech-recognition
 pyaudio
 pymupdf
 python-docx
