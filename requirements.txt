@@ -5,3 +5,4 @@ python-docx
 ibm-watson
 requests
 fpdf
+reportlab
