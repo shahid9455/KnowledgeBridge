@@ -1,9 +1,7 @@
 streamlit
-SpeechRecognition
-pymupdf
+streamlit_audio_recorder
+requests
+PyMuPDF
 python-docx
 ibm-watson
-requests
 fpdf
-reportlab
-sounddevice
