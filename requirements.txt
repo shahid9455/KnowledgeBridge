@@ -1,6 +1,5 @@
 streamlit
-speech-recognition
-pyaudio
+SpeechRecognition
 pymupdf
 python-docx
 ibm-watson
