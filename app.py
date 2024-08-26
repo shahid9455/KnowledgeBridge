@@ -1,3 +1,5 @@
+import os
+os.environ["SDL_AUDIODRIVER"] = "dummy"
 import streamlit as st
 import speech_recognition as sr
 from io import BytesIO
