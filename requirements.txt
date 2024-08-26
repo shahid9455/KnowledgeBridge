@@ -6,3 +6,4 @@ ibm-watson
 requests
 fpdf
 reportlab
+sounddevice
