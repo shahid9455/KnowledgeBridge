@@ -1,7 +1,4 @@
-import os
-os.environ["SDL_AUDIODRIVER"] = "dummy"
 import streamlit as st
-import speech_recognition as sr
 from io import BytesIO
 import fitz  # PyMuPDF
 from docx import Document
@@ -42,9 +39,6 @@ aiml_client = AIMLClient(api_key="45228194012549f09d70dd18da5ff8a8", base_url="h
 filename = 'text_storage_with_keywords.txt'
 
 # Initialize session state
-if "is_recording" not in st.session_state:
-    st.session_state.is_recording = False
-
 if "transcribed_text" not in st.session_state:
     st.session_state.transcribed_text = ""
 
@@ -83,30 +77,6 @@ page = st.sidebar.radio("Go to", ["Input", "Search"])
 
 if page == "Input":
     st.title("KnowledgeBridge")
-
-    # Voice Recording Section
-    st.header("Voice Recording")
-    start_button = st.button("Start Recording", key="start_recording")
-
-    if start_button:
-        recognizer = sr.Recognizer()
-
-        try:
-            mic = sr.Microphone()
-            with mic as source:
-                st.write("Listening...")
-                audio = recognizer.listen(source)
-
-                try:
-                    # Recognize speech using Google Web Speech API
-                    text = recognizer.recognize_google(audio)
-                    st.session_state.transcribed_text = text
-                except sr.UnknownValueError:
-                    st.session_state.transcribed_text = "Google Speech Recognition could not understand audio"
-                except sr.RequestError:
-                    st.session_state.transcribed_text = "Could not request results from Google Speech Recognition service"
-        except OSError:
-            st.error("No Default Input Device Available. Please connect a microphone and try again.")
 
     # Text Input Section
     st.header("Text Input")
@@ -237,30 +207,13 @@ elif page == "Search":
                     if related_data:
                         output_text = f"You: {query_input}\n\nKnowledgeBridge:\n\n *Your search result is not in the database but here is the related data:*\n\n{related_data}"
                     else:
-                        output_text = f"You: {query_input}\n\nKnowledgeBridge: Sorry, no relevant data found."
+                        output_text = f"You: {query_input}\n\nKnowledgeBridge:\n\n *No related data found.*"
                 else:
-                    output_text = f"You: {query_input}\n\nKnowledgeBridge:\n\n *Your search result is in the database:*\n\n{matching_texts[0]}"
+                    output_text = f"You: {query_input}\n\nKnowledgeBridge:\n\n Your search result is:\n\n" + '\n'.join(matching_texts)
 
-                st.text_area("Search Result:", value=output_text, height=300)
-
+                st.session_state.search_results = output_text
+                st.text_area("Search Results", value=st.session_state.search_results, height=300)
             except Exception as e:
                 st.error(f"An error occurred during the search: {str(e)}")
         else:
-            st.warning("No keywords entered for search.")
-
-    # Export Results Section
-    if st.button("Export Results", key="export_results"):
-        if st.session_state.search_results:
-            pdf = generate_pdf(st.session_state.search_results)
-            pdf_buffer = BytesIO()
-            pdf.output(pdf_buffer)
-            pdf_buffer.seek(0)
-
-            st.download_button(
-                label="Download PDF",
-                data=pdf_buffer,
-                file_name="search_results.pdf",
-                mime="application/pdf"
-            )
-        else:
-            st.warning("No search results to export.")
+            st.warning("Please enter some keywords to search.")
