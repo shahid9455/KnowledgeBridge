@@ -10,4 +10,4 @@ sounddevice
 streamlit-audiorecorder
 audio-recorder-streamlit
 PyAudio
-distutils
+pyaudio
