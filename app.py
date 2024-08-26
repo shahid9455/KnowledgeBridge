@@ -6,7 +6,7 @@ from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_watson.natural_language_understanding_v1 import Features, KeywordsOptions
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 import requests
-from fpdf import FPDF
+import sqlite3
 
 # IBM Watson NLU Configuration
 api_key_watson = 'IHbYzsY18Sl7i3Wr-_9YrYjpARDKZRnkO2ETjR5mfvnP'
@@ -35,31 +35,39 @@ class AIMLClient:
 
 aiml_client = AIMLClient(api_key="45228194012549f09d70dd18da5ff8a8", base_url="https://api.aimlapi.com")
 
-# Define the filename where text will be stored
-filename = 'text_storage_with_keywords.txt'
+# Database configuration
+conn = sqlite3.connect('text_storage.db', check_same_thread=False)
+c = conn.cursor()
+
+# Create table if it doesn't exist
+c.execute('''CREATE TABLE IF NOT EXISTS texts
+             (text TEXT, keywords TEXT)''')
+
+# Function to save text and keywords to the database
+def save_to_db(text, keywords):
+    c.execute("INSERT INTO texts (text, keywords) VALUES (?, ?)", (text, ', '.join(keywords)))
+    conn.commit()
+
+# Function to search the database
+def search_db(query_keywords):
+    c.execute("SELECT text, keywords FROM texts")
+    all_rows = c.fetchall()
+    matching_texts = []
+
+    for row in all_rows:
+        text, keywords = row
+        stored_keywords = keywords.split(', ')
+        if any(query_kw.lower() in stored_keywords for query_kw in query_keywords):
+            matching_texts.append(text)
+
+    return matching_texts
 
 # Initialize session state
-if "transcribed_text" not in st.session_state:
-    st.session_state.transcribed_text = ""
-
-if "uploaded_text" not in st.session_state:
-    st.session_state.uploaded_text = ""
-
 if "search_results" not in st.session_state:
     st.session_state.search_results = []
 
 if "query_input" not in st.session_state:
     st.session_state.query_input = ""
-
-# Function to generate PDF
-def generate_pdf(texts):
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
-    for text in texts:
-        pdf.multi_cell(0, 10, text)
-        pdf.ln(5)
-    return pdf
 
 # Apply custom CSS for black boxes
 st.markdown("""
@@ -80,7 +88,7 @@ if page == "Input":
 
     # Text Input Section
     st.header("Text Input")
-    text_input = st.text_area("Enter text to save:", value=st.session_state.transcribed_text)
+    text_input = st.text_area("Enter text to save:")
 
     if st.button("Save Text", key="save_text"):
         if text_input:
@@ -93,12 +101,8 @@ if page == "Input":
                 ).get_result()
 
                 keywords = [kw['text'] for kw in response['keywords']]
-                keyword_string = ', '.join(keywords)
+                save_to_db(text_input, keywords)
 
-                with open(filename, 'a') as file:
-                    file.write(f"Text: {text_input}\nKeywords: {keyword_string}\n\n")
-
-                st.session_state.transcribed_text = ""  # Clear the input field after saving
                 st.success("Your input and extracted keywords have been saved successfully.")
             except Exception as e:
                 st.error(f"An error occurred while processing the text: {str(e)}")
@@ -118,9 +122,25 @@ if page == "Input":
                         page = pdf[page_num]
                         text += page.get_text()
 
-                st.session_state.uploaded_text = text
                 st.success("PDF content successfully extracted and stored.")
-                st.text_area("Extracted Text from PDF:", value=st.session_state.uploaded_text, height=300)
+                st.text_area("Extracted Text from PDF:", value=text, height=300)
+
+                if st.button("Save Extracted Text with Keywords", key="save_extracted_text"):
+                    try:
+                        response = nlu.analyze(
+                            text=text,
+                            features=Features(
+                                keywords=KeywordsOptions(limit=15)
+                            )
+                        ).get_result()
+
+                        keywords = [kw['text'] for kw in response['keywords']]
+                        save_to_db(text, keywords)
+
+                        st.success("Extracted text and keywords have been saved successfully.")
+                    except Exception as e:
+                        st.error(f"An error occurred while processing the text: {str(e)}")
+
             except Exception as e:
                 st.error(f"An error occurred while extracting text from the PDF: {str(e)}")
 
@@ -129,35 +149,27 @@ if page == "Input":
                 doc = Document(uploaded_file)
                 text = "\n".join([para.text for para in doc.paragraphs])
 
-                st.session_state.uploaded_text = text
                 st.success("DOCX content successfully extracted and stored.")
-                st.text_area("Extracted Text from DOCX:", value=st.session_state.uploaded_text, height=300)
+                st.text_area("Extracted Text from DOCX:", value=text, height=300)
+
+                if st.button("Save Extracted Text with Keywords", key="save_extracted_text"):
+                    try:
+                        response = nlu.analyze(
+                            text=text,
+                            features=Features(
+                                keywords=KeywordsOptions(limit=15)
+                            )
+                        ).get_result()
+
+                        keywords = [kw['text'] for kw in response['keywords']]
+                        save_to_db(text, keywords)
+
+                        st.success("Extracted text and keywords have been saved successfully.")
+                    except Exception as e:
+                        st.error(f"An error occurred while processing the text: {str(e)}")
+
             except Exception as e:
                 st.error(f"An error occurred while extracting text from the DOCX: {str(e)}")
-
-        # Save extracted text with keywords
-        if st.button("Save Extracted Text with Keywords", key="save_extracted_text"):
-            if st.session_state.uploaded_text:
-                try:
-                    response = nlu.analyze(
-                        text=st.session_state.uploaded_text,
-                        features=Features(
-                            keywords=KeywordsOptions(limit=15)
-                        )
-                    ).get_result()
-
-                    keywords = [kw['text'] for kw in response['keywords']]
-                    keyword_string = ', '.join(keywords)
-
-                    with open(filename, 'a') as file:
-                        file.write(f"Text: {st.session_state.uploaded_text}\nKeywords: {keyword_string}\n\n")
-
-                    st.session_state.uploaded_text = ""  # Clear the text after saving
-                    st.success("Extracted text and keywords have been saved successfully.")
-                except Exception as e:
-                    st.error(f"An error occurred while processing the text: {str(e)}")
-            else:
-                st.warning("No extracted text to save.")
 
 elif page == "Search":
     st.title("Search Stored Knowledge")
@@ -169,50 +181,28 @@ elif page == "Search":
         if query_input:
             try:
                 query_keywords = [kw.strip() for kw in query_input.split()]
-                keyword_string = ', '.join(query_keywords)
-
-                all_keywords = []
-                all_texts = []
-                
-                try:
-                    with open(filename, 'r') as file:
-                        lines = file.readlines()
-
-                        for line in lines:
-                            if 'Keywords:' in line:
-                                stored_keywords = [kw.strip().lower() for kw in line.replace('Keywords:', '').split(',')]
-                                all_keywords.append(stored_keywords)
-                            if 'Text:' in line:
-                                all_texts.append(line.replace('Text:', '').strip())
-                except FileNotFoundError:
-                    st.error("The text file was not found. Please save some text first.")
-                    all_keywords = []
-                    all_texts = []
-
-                matching_texts = []
-                for text, keywords in zip(all_texts, all_keywords):
-                    if any(query_kw.lower() in ' '.join(keywords) for query_kw in query_keywords):
-                        matching_texts.append(text)
+                matching_texts = search_db(query_keywords)
 
                 if not matching_texts:
                     response = aiml_client.chat_completions_create(
                         model="meta-llama/Meta-Llama-3-8B-Instruct-Lite",
                         messages=[
                             {"role": "system", "content": "You are an AI assistant who knows everything."},
-                            {"role": "user", "content": f"Provide related data for the following keywords: {keyword_string}"}
+                            {"role": "user", "content": f"Provide related data for the following keywords: {', '.join(query_keywords)}"}
                         ]
                     )
                     related_data = response['choices'][0]['message']['content'].strip()
                     
                     if related_data:
-                        output_text = f"You: {query_input}\n\nKnowledgeBridge:\n\n *Your search result is not in the database but here is the related data:*\n\n{related_data}"
+                        output_text = f"You: {query_input}\n\nKnowledgeBridge:\n\n*Your search result is not in the database, but here is the related data:*\n\n{related_data}"
                     else:
-                        output_text = f"You: {query_input}\n\nKnowledgeBridge:\n\n *No related data found.*"
+                        output_text = f"You: {query_input}\n\nKnowledgeBridge:\n\n*No related data found.*"
                 else:
-                    output_text = f"You: {query_input}\n\nKnowledgeBridge:\n\n Your search result is:\n\n" + '\n'.join(matching_texts)
+                    output_text = f"You: {query_input}\n\nKnowledgeBridge:\n\nYour search result is:\n\n" + '\n\n'.join(matching_texts)
 
                 st.session_state.search_results = output_text
                 st.text_area("Search Results", value=st.session_state.search_results, height=300)
+
             except Exception as e:
                 st.error(f"An error occurred during the search: {str(e)}")
         else:
