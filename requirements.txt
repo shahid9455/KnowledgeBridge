@@ -9,3 +9,4 @@ reportlab
 setuptools
 pyaudio==0.2.11
 streamlit-audiorecorder
+psycopg2
