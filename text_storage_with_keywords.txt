@@ -1,0 +1,181 @@
+
+
+Text: Hi today I made knowledge and experience story system for juniors to record their experience and get the knowledge from the experience persons
+Keywords: experience story system, today, knowledge, juniors, experience
+
+Text: When I first walked through the doors of GlobalTech Solutions, I was fresh out of college eager, a bit nervous, and determined to make my mark. The corporate world was intimidating, but I was lucky to find a mentor in David, my manager. He guided me through those initial, overwhelming months, teaching me the ropes and helping me understand the complex workflows. With his support, I gained the confidence to take on challenging projects.
+Keywords: corporate world, doors of GlobalTech Solutions, overwhelming months, support, college
+
+Text: I am Best in programming
+Keywords: programming
+
+Text: my name is Shahid
+Keywords: name, Shahid
+
+Text: i support shahid
+Keywords: shahid
+
+Text: Bachelor of Science in Artificial Intelligence,
+• Honors: Graduated with a CGPA of 3.72/4.0, reflecting high academic achievement in Artificial Intelligence.
+• Key Project: Developed a real-time age, gender, ethnicity, and emotion detection system using deep learning on
+embedded systems, demonstrating advanced skills in AI and embedded technologies.
+Driven by curiosity and a commitment to excellence, I thrive in challenging environments that push me to innovate.
+With a solid foundation in Artificial Intelligence and a focus on continuous improvement, I approach every task with
+enthusiasm and integrity. My adaptability and problem-solving abilities empower me to deliver impactful results.
+Driven by curiosity and a commitment to excellence, I thrive in challenging environments that push me to innovate. With a solid foundation in Artificial Intelligence and a focus on continuous improvement, I approach every task with enthusiasm and integrity. My adaptability and problem-solving abilities empower me to deliver impactful results.
+Pakistan |  m.shahid9455@gmail.com | +92 305 9455329 | LinkedIn | GitHub | LeetCode 
+Jan 2021 - present
+EcodeCamp
+Ongoing
+• Developed and deployed advanced AI models, including machine learning algorithms and neural networks, to
+ address real-world challenges and drive technological innovation.
+• Led end-to-end project lifecycles, from conceptualization and development to implementation and evaluation,
+ ensuring high-quality and impactful solutions.
+• Conducted comprehensive data analysis and preprocessing, extracting actionable insights that informed strategic
+ decisions and enhanced project outcomes.
+• Collaborated with cross-functional teams to integrate AI solutions seamlessly into existing systems, improving
+ efficiency and performance across various applications.
+EXPERIENCE
+Ongoing
+Jan 2021 - present
+• Directed teams in competitive hackathons, driving the development of innovative solutions and demonstrating strong technical leadership.
+• Actively participated in various hackathons, applying minimal coding techniques to create impactful AI applications and solutions.
+• Collaborated with diverse teams to tackle complex problems, delivering successful outcomes and showcasing p
+roblem-solving and adaptability.
+• Actively participated in various hackathons, applying minimal coding techniques to create impactful AI
+applications and solutions.
+Ju ly 2024- pres ent
+- Founder & CEO
+• Established EcodeCamp, leading efforts in delivering innovative software services, project-based freelancing, and comprehensive internship programs.
+• Designed and executed a multifaceted internship program across 10 domains, significantly boosting talent acquisit
+ion and professional development.
+• Managed a  tea m of prof es sionals, prom oting a cul ture of excelle nce  and cont inuous improve ment whil e over
+seeing key operational and strategic initiatives.
+• Elevated  t he co mpa ny’s LinkedIn p resence, e nh ancing e nga gement and visi bility with in the AI an d tec
+h sectors.
+• Elevated the company’s LinkedIn presence, enhancing engagement and visibility within the AI and tech sectors.
+LangFlow Hackathon
+Led a team in the LangFlow Hackathon, focusing on innovative AI applications and solutions.
+Falcon Hackathon
+Led a team in the Falcon Hackathon, developing cutting-edge technology solutions and driving project success.
+WordSprint Developers Hackathon 3.0
+Engaged in the WordSprint Developers Hackathon 3.0, showcasing skills in rapid development and innovative problem-solving.
+IoT-Based Smart Home System
+Implemented an IoT system for smart home automation, featuring real-time control and monitoring of appliances through a mobile app.
+AI Chatbot Cost Optimization |  AWS Cost Tracking Platform | Crime Rate Prediction | More
+Achieved a total of 823/1100 marks, demonstrating strong performance in the pre-medical curriculum
+Islam University of Bahawalpur, Pakistan 
+2020- 2024
+Bachelor of Science in Artificial Intelligence,
+• Honors: Graduated with a CGPA of 3.72/4.0, reflecting high academic achievement in Artificial Intelligence.
+• Key Proje ct: Deve loped a re al-time  age, gender,  ethnici ty, and emotion de tection system u sing deep learni
+ng on embedded systems, demonstrating advanced skills in AI and embedded technologies.
+2016- 2019
+FSc (Pre-Medical),
+Government Post Graduate College Vehari, Pakistan
+Achieved a total of 823/1100 marks, demonstrating strong performance in the pre-medical curriculum
+Sep. 2023
+Activities: Coding, AI, making new cutting-edge programs, teaching, and coaching interns
+National Vocational & Technical Training Commission.
+Certificate, Artificial Intelligence (Machine Learning, Deep Learning, Communication). 
+LangFlow Hackathon
+Technical: OpenCV, Microsoft Azure, NLTK, Flask, GitHub, Face_Recognition, Folium, Jupyter Notebook, Google Colab, Anaconda, Git and GitHub, Raspberry Pi, Arduino, Android Studio, Unity Hub, VS Code Runner, WordPress
+Programming Languages: Python (3 yrs), C++ (2 yrs), HTML (3 yrs), CSS (3 yrs), JavaScript (2 yrs)
+Libraries/Frameworks Skills: TensorFlow/Keras, NumPy, Pandas, Matplotlib
+Web Development Skills: Flash, Bootstrap, WordPress, JavaScript, HTML, CSS
+Other Skills: Internet of Things (IoT)
+Interests: Working as an AI professional, learning new technologies, exploring the world
+Activities: Coding, AI, making new cutting-edge programs, teaching, and coaching interns
+AI Chatbot Cost Optimization |  AWS Cost Tracking Platform | Crime Rate Prediction | More
+English | Urdu | Punjabi | Saraiki
+
+Keywords: cross-functional teams, strong technical leadership, advanced skills, Key Proje ct, real-time age, emotion detection system, embedded systems, Key Project, Artificial Intelligence, advanced AI models, tea m of prof es sionals, development of innovative solutions, solid foundation, various applications, AI Chatbot Cost Optimization
+
+Text: I made knowledge and experience story system
+Keywords: experience story system, knowledge
+
+Text: Bachelor of Science in Artificial Intelligence,
+• Honors: Graduated with a CGPA of 3.72/4.0, reflecting high academic achievement in Artificial Intelligence.
+• Key Project: Developed a real-time age, gender, ethnicity, and emotion detection system using deep learning on
+embedded systems, demonstrating advanced skills in AI and embedded technologies.
+Driven by curiosity and a commitment to excellence, I thrive in challenging environments that push me to innovate.
+With a solid foundation in Artificial Intelligence and a focus on continuous improvement, I approach every task with
+enthusiasm and integrity. My adaptability and problem-solving abilities empower me to deliver impactful results.
+Driven by curiosity and a commitment to excellence, I thrive in challenging environments that push me to innovate. With a solid foundation in Artificial Intelligence and a focus on continuous improvement, I approach every task with enthusiasm and integrity. My adaptability and problem-solving abilities empower me to deliver impactful results.
+Pakistan |  m.shahid9455@gmail.com | +92 305 9455329 | LinkedIn | GitHub | LeetCode 
+Jan 2021 - present
+EcodeCamp
+Ongoing
+• Developed and deployed advanced AI models, including machine learning algorithms and neural networks, to
+ address real-world challenges and drive technological innovation.
+• Led end-to-end project lifecycles, from conceptualization and development to implementation and evaluation,
+ ensuring high-quality and impactful solutions.
+• Conducted comprehensive data analysis and preprocessing, extracting actionable insights that informed strategic
+ decisions and enhanced project outcomes.
+• Collaborated with cross-functional teams to integrate AI solutions seamlessly into existing systems, improving
+ efficiency and performance across various applications.
+EXPERIENCE
+Ongoing
+Jan 2021 - present
+• Directed teams in competitive hackathons, driving the development of innovative solutions and demonstrating strong technical leadership.
+• Actively participated in various hackathons, applying minimal coding techniques to create impactful AI applications and solutions.
+• Collaborated with diverse teams to tackle complex problems, delivering successful outcomes and showcasing p
+roblem-solving and adaptability.
+• Actively participated in various hackathons, applying minimal coding techniques to create impactful AI
+applications and solutions.
+Ju ly 2024- pres ent
+- Founder & CEO
+• Established EcodeCamp, leading efforts in delivering innovative software services, project-based freelancing, and comprehensive internship programs.
+• Designed and executed a multifaceted internship program across 10 domains, significantly boosting talent acquisit
+ion and professional development.
+• Managed a  tea m of prof es sionals, prom oting a cul ture of excelle nce  and cont inuous improve ment whil e over
+seeing key operational and strategic initiatives.
+• Elevated  t he co mpa ny’s LinkedIn p resence, e nh ancing e nga gement and visi bility with in the AI an d tec
+h sectors.
+• Elevated the company’s LinkedIn presence, enhancing engagement and visibility within the AI and tech sectors.
+LangFlow Hackathon
+Led a team in the LangFlow Hackathon, focusing on innovative AI applications and solutions.
+Falcon Hackathon
+Led a team in the Falcon Hackathon, developing cutting-edge technology solutions and driving project success.
+WordSprint Developers Hackathon 3.0
+Engaged in the WordSprint Developers Hackathon 3.0, showcasing skills in rapid development and innovative problem-solving.
+IoT-Based Smart Home System
+Implemented an IoT system for smart home automation, featuring real-time control and monitoring of appliances through a mobile app.
+AI Chatbot Cost Optimization |  AWS Cost Tracking Platform | Crime Rate Prediction | More
+Achieved a total of 823/1100 marks, demonstrating strong performance in the pre-medical curriculum
+Islam University of Bahawalpur, Pakistan 
+2020- 2024
+Bachelor of Science in Artificial Intelligence,
+• Honors: Graduated with a CGPA of 3.72/4.0, reflecting high academic achievement in Artificial Intelligence.
+• Key Proje ct: Deve loped a re al-time  age, gender,  ethnici ty, and emotion de tection system u sing deep learni
+ng on embedded systems, demonstrating advanced skills in AI and embedded technologies.
+2016- 2019
+FSc (Pre-Medical),
+Government Post Graduate College Vehari, Pakistan
+Achieved a total of 823/1100 marks, demonstrating strong performance in the pre-medical curriculum
+Sep. 2023
+Activities: Coding, AI, making new cutting-edge programs, teaching, and coaching interns
+National Vocational & Technical Training Commission.
+Certificate, Artificial Intelligence (Machine Learning, Deep Learning, Communication). 
+LangFlow Hackathon
+Technical: OpenCV, Microsoft Azure, NLTK, Flask, GitHub, Face_Recognition, Folium, Jupyter Notebook, Google Colab, Anaconda, Git and GitHub, Raspberry Pi, Arduino, Android Studio, Unity Hub, VS Code Runner, WordPress
+Programming Languages: Python (3 yrs), C++ (2 yrs), HTML (3 yrs), CSS (3 yrs), JavaScript (2 yrs)
+Libraries/Frameworks Skills: TensorFlow/Keras, NumPy, Pandas, Matplotlib
+Web Development Skills: Flash, Bootstrap, WordPress, JavaScript, HTML, CSS
+Other Skills: Internet of Things (IoT)
+Interests: Working as an AI professional, learning new technologies, exploring the world
+Activities: Coding, AI, making new cutting-edge programs, teaching, and coaching interns
+AI Chatbot Cost Optimization |  AWS Cost Tracking Platform | Crime Rate Prediction | More
+English | Urdu | Punjabi | Saraiki
+
+Keywords: cross-functional teams, strong technical leadership, advanced skills, Key Proje ct, real-time age, emotion detection system, embedded systems, Key Project, Artificial Intelligence, advanced AI models, tea m of prof es sionals, development of innovative solutions, solid foundation, various applications, AI Chatbot Cost Optimization
+
+Text: ODI Mein knowledge and experience story system
+Keywords: ODI Mein knowledge, experience story system
+
+Text: Here is a polished and professional summary:
+Here is a refined and polished summary:
+"I am Mohammed Shahid, an artificial intelligence engineer, and I am pleased to announce that I 
+
+Keywords: Mohammed Shahid, artificial intelligence engineer, summary, professional summary
+
